@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-inline-rule-shadowing #-}
+
 {-# LANGUAGE BangPatterns      #-}
 {-# LANGUAGE CPP               #-}
 {-# LANGUAGE MagicHash         #-}

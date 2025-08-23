@@ -48,7 +48,7 @@ common common-options
     -Wall -Wincomplete-uni-patterns
     -Wincomplete-record-updates -Widentities -Wredundant-constraints
     -Wcpp-undef -fwarn-tabs -Wpartial-fields
-    -fdefer-diagnostics -Wunused-packages
+    -Wunused-packages
     -fenable-th-splice-warnings
     -fno-omit-yields
   build-depends:
