@@ -130,16 +130,6 @@ mysql -u root -e "GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'testMyS
 
 * Set `max_allowed_packet` to larger than 256M(for test large packet).
 
-New features will be automatically tested by inspecting MySQL server's version, travis is keeping an eye on following combinations:
-
-+ CABALVER=1.18 GHCVER=7.8.4  MYSQLVER=5.5
-+ CABALVER=1.22 GHCVER=7.10.2 MYSQLVER=5.5
-+ CABALVER=1.24 GHCVER=8.0.1  MYSQLVER=5.5
-+ CABALVER=1.24 GHCVER=8.0.1  MYSQLVER=5.6
-+ CABALVER=1.24 GHCVER=8.0.1  MYSQLVER=5.7
-
-Please reference `.travis.yml` if you have problems with setting up test environment.
-
 Enter benchmark directory and run `./bench.sh` to benchmark 1) c++ version 2) mysql-pure 3) FFI version mysql, you may need to:
 
 + Modify `bench.sh`(change the include path) to get c++ version compiled.
