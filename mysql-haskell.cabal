@@ -42,7 +42,21 @@ source-repository head
   type:     git
   location: git://github.com/winterland1989/mysql-haskell.git
 
+
+common common-options
+  ghc-options:
+    -Wall -Wincomplete-uni-patterns
+    -Wincomplete-record-updates -Widentities -Wredundant-constraints
+    -Wcpp-undef -fwarn-tabs -Wpartial-fields
+    -fdefer-diagnostics -Wunused-packages
+    -fenable-th-splice-warnings
+    -fno-omit-yields
+  build-depends:
+      base >=4.9.1.0 && <4.21.0
+  default-language: GHC2021
+
 library
+  import: common-options
   exposed-modules:
     Data.Binary.Parser
     Data.Binary.Parser.Numeric
@@ -72,7 +86,6 @@ library
   hs-source-dirs:     src
   other-modules:      Database.MySQL.Query
   build-depends:
-    base >=4.7 && <4.19.0 || ^>=4.19.0 || ^>=4.20.0 || ^>=4.21.0,
     binary >=0.8.3 && <0.9,
     blaze-textual >=0.2 && <0.3,
     bytestring >=0.10.2.0 && <0.12 || ^>=0.12.0,
@@ -95,18 +108,12 @@ library
     vector >=0.8 && <0.13 || ^>=0.13.0,
     word-compat >=0.0 && <0.1
 
-  default-language:   Haskell2010
   default-extensions:
     DeriveDataTypeable
     DeriveGeneric
     MultiWayIf
     OverloadedStrings
 
-  ghc-options:
-    -Wall -Wincomplete-uni-patterns
-    -Wincomplete-record-updates -Widentities -Wredundant-constraints
-    -Wcpp-undef -fwarn-tabs -Wpartial-fields
-    -Wunused-packages -fenable-th-splice-warnings
 
 test-suite test
   type:               exitcode-stdio-1.0
@@ -133,7 +140,6 @@ test-suite test
   hs-source-dirs:     test
   build-depends:
     attoparsec < 1.0,
-    base,
     binary >=0.8,
     bytestring >=0.10,
     bytestring-lexing >=0.5,
@@ -160,9 +166,9 @@ test-suite test
     OverloadedStrings
 
   ghc-options:        -threaded
-  default-language:   Haskell2010
 
 benchmark binary-parsers-bench
+  import: common-options
   other-modules:
     Aeson
     AesonBP
@@ -173,7 +179,6 @@ benchmark binary-parsers-bench
 
   build-depends:
     attoparsec,
-    base,
     binary,
     bytestring,
     case-insensitive < 2,
@@ -189,21 +194,29 @@ benchmark binary-parsers-bench
     unordered-containers,
     vector
 
-  default-language: Haskell2010
   hs-source-dirs:   binary-parser-bench
   main-is:          Bench.hs
   type:             exitcode-stdio-1.0
   ghc-options:      -O2
 
 benchmark bench24
-  default-language: Haskell2010
+  import: common-options
   type:             exitcode-stdio-1.0
   hs-source-dirs:   word24-bench
   main-is:          Benchmark.hs
   build-depends:
-    base,
     criterion >=1.1,
     deepseq >=1.2 && <2,
     mysql-haskell
 
   ghc-options:      -O2
+
+-- enable to debug the RULES    
+-- executable exe
+--   import: common-options
+--   main-is: Main.hs
+--   hs-source-dirs:
+--       app
+--   build-depends:
+--       mysql-haskell
+--   ghc-options: -Wno-unused-packages
