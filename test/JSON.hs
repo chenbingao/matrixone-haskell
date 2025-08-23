@@ -1,7 +1,6 @@
 module JSON where
 
 import Control.Monad
-import Control.Applicative
 import qualified Data.ByteString as B
 import Test.Tasty.HUnit
 import Test.Tasty (TestTree)

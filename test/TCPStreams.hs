@@ -9,10 +9,9 @@ import           Control.Concurrent             (forkIO, newEmptyMVar, putMVar,
 import qualified Network.Socket                 as N
 import           System.Timeout                 (timeout)
 import           Test.Tasty
-import           Test.Tasty.HUnit                     hiding (Test)
+import           Test.Tasty.HUnit
 import qualified Data.ByteString                as B
 import qualified Data.ByteString.Lazy           as L
-import           System.Directory               (removeFile)
 ------------------------------------------------------------------------------
 import qualified Data.TLSSetting                as TLS
 import           Data.Connection
@@ -24,6 +23,7 @@ import qualified System.IO.Streams.TLS          as TLS
 tests :: TestTree
 tests = testGroup "tests" [ testGroup "TCP" tcpTests
         , testGroup "TLS"  tlsTests
+        , testGroup "HTTPS" [testHTTPS]
         ]
 
 ------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ testTCPSocket = testCase "network/socket" $
     go = do
         portMVar   <- newEmptyMVar
         resultMVar <- newEmptyMVar
-        forkIO $ client portMVar resultMVar
+        _ <- forkIO $ client portMVar resultMVar
         server portMVar
         l <- takeMVar resultMVar
         assertEqual "testSocket" l ["ok"]
@@ -79,7 +79,7 @@ testTLSSocket = testCase "network/socket" $
     go = do
         portMVar   <- newEmptyMVar
         resultMVar <- newEmptyMVar
-        forkIO $ client portMVar resultMVar
+        _ <- forkIO $ client portMVar resultMVar
         server portMVar
         l <- takeMVar resultMVar
         assertEqual "testSocket" l ["ok"]

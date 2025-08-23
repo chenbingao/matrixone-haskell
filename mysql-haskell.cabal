@@ -132,7 +132,7 @@ test-suite test
     QC.ByteString
     QC.Combinator
     QC.Common
-    QCUtils
+    Orphans
     TCPStreams
     TextRow
     TextRowNew
@@ -164,7 +164,7 @@ test-suite test
     MultiWayIf
     OverloadedStrings
 
-  ghc-options:        -threaded
+  ghc-options:        -threaded 
 
 benchmark binary-parsers-bench
   import: common-options
