@@ -1,5 +1,11 @@
 # Revision history for mysql-haskell
 
+## 1.1.7 -- 2025.08.23 
++ bump constraints
++ upgrade cabal file
++ add upper bounds to all the warnings
+  + it was only the test suite so I made them broad.
+
 ## 1.1.6 -- 2024.10.23 
 + bump constraints
 
