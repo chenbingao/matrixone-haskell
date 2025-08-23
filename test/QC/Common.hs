@@ -12,25 +12,12 @@ module QC.Common
     , liftOp
     ) where
 
-#if !MIN_VERSION_base(4,8,0)
-import Control.Applicative
-#endif
 import Data.Char (isAlpha)
 import Test.QuickCheck
 import Test.QuickCheck.Instances ()
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
 import qualified Data.Binary.Parser as P
-
-#if !MIN_VERSION_base(4,4,0)
--- This should really be a dependency on the random package :-(
-instance Random Word8 where
-  randomR = integralRandomR
-  random = randomR (minBound,maxBound)
-
-instance Arbitrary Word8 where
-    arbitrary = choose (minBound, maxBound)
-#endif
 
 parseBS :: P.Get r -> BL.ByteString -> Maybe r
 parseBS p lbs = case P.parseLazy p lbs of

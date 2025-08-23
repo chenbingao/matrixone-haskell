@@ -1,14 +1,11 @@
 {-# LANGUAGE BangPatterns, CPP, OverloadedStrings #-}
 module QC.ByteString (tests) where
 
-#if !MIN_VERSION_base(4,8,0)
-import Control.Applicative
-#endif
-import Data.Char (chr, ord, toUpper)
+import Data.Char (chr, ord)
 import Data.Int (Int64)
 import Data.Word (Word8)
 import Prelude hiding (take, takeWhile)
-import QC.Common (ASCII(..), liftOp, parseBS, toStrictBS)
+import QC.Common (liftOp, parseBS, toStrictBS)
 import Test.Tasty (TestTree)
 import Test.Tasty.QuickCheck (testProperty)
 import Test.QuickCheck
@@ -17,7 +14,6 @@ import qualified Data.ByteString.Builder.Scientific as Sci
 import qualified Data.Binary.Parser as P
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Builder as BB
-import qualified Data.ByteString.Char8 as B8
 import qualified Data.ByteString.Lazy as L
 import qualified Data.ByteString.Lazy.Char8 as L8
 

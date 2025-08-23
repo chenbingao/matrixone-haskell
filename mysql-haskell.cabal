@@ -1,6 +1,6 @@
-cabal-version:      2.2
+cabal-version:      3.4
 name:               mysql-haskell
-version:            1.1.6
+version:            1.1.7
 synopsis:           pure haskell MySQL driver
 description:        pure haskell MySQL driver.
 license:            BSD-3-Clause
@@ -42,7 +42,21 @@ source-repository head
   type:     git
   location: git://github.com/winterland1989/mysql-haskell.git
 
+
+common common-options
+  ghc-options:
+    -Wall -Wincomplete-uni-patterns
+    -Wincomplete-record-updates -Widentities -Wredundant-constraints
+    -Wcpp-undef -fwarn-tabs -Wpartial-fields
+    -Wunused-packages
+    -fenable-th-splice-warnings
+    -fno-omit-yields
+  build-depends:
+      base >=4.9.1.0 && <4.21.0
+  default-language: GHC2021
+
 library
+  import: common-options
   exposed-modules:
     Data.Binary.Parser
     Data.Binary.Parser.Numeric
@@ -72,7 +86,6 @@ library
   hs-source-dirs:     src
   other-modules:      Database.MySQL.Query
   build-depends:
-    base >=4.7 && <4.19.0 || ^>=4.19.0 || ^>=4.20.0 || ^>=4.21.0,
     binary >=0.8.3 && <0.9,
     blaze-textual >=0.2 && <0.3,
     bytestring >=0.10.2.0 && <0.12 || ^>=0.12.0,
@@ -95,20 +108,15 @@ library
     vector >=0.8 && <0.13 || ^>=0.13.0,
     word-compat >=0.0 && <0.1
 
-  default-language:   Haskell2010
   default-extensions:
     DeriveDataTypeable
     DeriveGeneric
     MultiWayIf
     OverloadedStrings
 
-  ghc-options:
-    -Wall -Wincomplete-uni-patterns
-    -Wincomplete-record-updates -Widentities -Wredundant-constraints
-    -Wcpp-undef -fwarn-tabs -Wpartial-fields
-    -Wunused-packages -fenable-th-splice-warnings
 
 test-suite test
+  import: common-options
   type:               exitcode-stdio-1.0
   main-is:            Main.hs
   other-modules:
@@ -124,7 +132,7 @@ test-suite test
     QC.ByteString
     QC.Combinator
     QC.Common
-    QCUtils
+    Orphans
     TCPStreams
     TextRow
     TextRowNew
@@ -132,37 +140,35 @@ test-suite test
 
   hs-source-dirs:     test
   build-depends:
-    attoparsec,
-    base,
+    attoparsec < 1.0,
     binary >=0.8,
     bytestring >=0.10,
-    bytestring-lexing >=0.5,
-    containers,
     deepseq,
-    directory,
-    filepath,
+    directory < 2.0,
+    filepath < 2.0,
     io-streams,
     mysql-haskell,
     network,
-    QuickCheck >=2.7,
-    quickcheck-instances,
+    QuickCheck >=2.7 && <3.0,
+    quickcheck-instances < 1.0,
     scientific >=0.3.0,
     tasty >=0.11 && <2.0,
-    tasty-hunit,
-    tasty-quickcheck >=0.8,
+    tasty-hunit < 1.0,
+    tasty-quickcheck >=0.8 && < 1.0,
+    tasty-expected-failure  < 1.0,
     text,
     time,
-    unordered-containers,
+    unordered-containers < 1.0,
     vector
 
   default-extensions:
     MultiWayIf
     OverloadedStrings
 
-  ghc-options:        -threaded
-  default-language:   Haskell2010
+  ghc-options:        -threaded 
 
 benchmark binary-parsers-bench
+  import: common-options
   other-modules:
     Aeson
     AesonBP
@@ -173,37 +179,44 @@ benchmark binary-parsers-bench
 
   build-depends:
     attoparsec,
-    base,
     binary,
     bytestring,
-    case-insensitive,
+    case-insensitive < 2,
     criterion >=1.1 && <1.2 || ^>=1.6.3,
     deepseq,
-    directory,
-    filepath,
-    http-types,
+    directory < 1.4,
+    filepath < 1.6,
+    http-types < 1.0,
     mysql-haskell,
-    scanner,
+    scanner < 0.4,
     scientific,
     text,
     unordered-containers,
     vector
 
-  default-language: Haskell2010
   hs-source-dirs:   binary-parser-bench
   main-is:          Bench.hs
   type:             exitcode-stdio-1.0
   ghc-options:      -O2
 
 benchmark bench24
-  default-language: Haskell2010
+  import: common-options
   type:             exitcode-stdio-1.0
   hs-source-dirs:   word24-bench
   main-is:          Benchmark.hs
   build-depends:
-    base,
     criterion >=1.1,
     deepseq >=1.2 && <2,
     mysql-haskell
 
   ghc-options:      -O2
+
+-- enable to debug the RULES    
+-- executable exe
+--   import: common-options
+--   main-is: Main.hs
+--   hs-source-dirs:
+--       app
+--   build-depends:
+--       mysql-haskell
+--   ghc-options: -Wno-unused-packages

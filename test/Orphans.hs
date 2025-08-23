@@ -1,12 +1,11 @@
-module QCUtils where
+{-# OPTIONS_GHC -Wno-orphans #-}
+
+-- https://tech.freckle.com/2018/12/12/a-home-for-orphan-instances/
+module Orphans where
 
 import Test.QuickCheck
-import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.Gen
 
-import Data.Int
 import Data.Int.Int24
-import Data.Word
 import Data.Word.Word24
 
 -- Arbitrary/CoArbitrary instances for Int24 and Word24

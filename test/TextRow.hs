@@ -3,7 +3,6 @@
 
 module TextRow where
 
-import           Control.Applicative
 import           Data.Time.Calendar  (fromGregorian)
 import           Data.Time.LocalTime (LocalTime (..), TimeOfDay (..))
 import           Database.MySQL.Base
@@ -13,7 +12,7 @@ import qualified Data.Vector as V
 
 tests :: MySQLConn -> Assertion
 tests c = do
-    (f, is) <- query_ c "SELECT * FROM test"
+    (f, is1) <- query_ c "SELECT * FROM test"
 
     assertEqual "decode Field types" (columnType <$> f)
         [ mySQLTypeLong
@@ -48,8 +47,8 @@ tests c = do
         , mySQLTypeString
         ]
 
-    Just v <- Stream.read is
-    assertEqual "decode NULL values" v
+    Just v1 <- Stream.read is1
+    assertEqual "decode NULL values" v1
         [ MySQLInt32 0
         , MySQLNull
         , MySQLNull
@@ -82,11 +81,11 @@ tests c = do
         , MySQLNull
         ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is1
 
     let bitV = 57514 -- 0b1110000010101010
 
-    execute_ c "UPDATE test SET \
+    _ <- execute_ c "UPDATE test SET \
                 \__bit        = b'1110000010101010'                    ,\
                 \__tinyInt    = -128                                   ,\
                 \__tinyIntU   = 255                                    ,\
@@ -117,10 +116,10 @@ tests c = do
                 \__enum       = 'foo'                                  ,\
                 \__set        = 'foo,bar' WHERE __id=0"
 
-    (_, is) <- query_ c "SELECT * FROM test"
-    Just v <- Stream.read is
+    (_, is2) <- query_ c "SELECT * FROM test"
+    Just v2 <- Stream.read is2
 
-    assertEqual "decode text protocol" v
+    assertEqual "decode text protocol" v2
         [ MySQLInt32 0
         , MySQLBit bitV
         , MySQLInt8 (-128)
@@ -153,15 +152,15 @@ tests c = do
         , MySQLText "foo,bar"
         ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is2
 
-    (_, is') <- queryVector_ c "SELECT * FROM test"
-    Just v' <- Stream.read is'
-    Stream.skipToEof is'
+    (_, is3) <- queryVector_ c "SELECT * FROM test"
+    Just v3 <- Stream.read is3
+    Stream.skipToEof is3
 
-    assertEqual "decode text protocol(queryVector_)" v (V.toList v')
+    assertEqual "decode text protocol(queryVector_)" v2 (V.toList v3)
 
-    execute c "UPDATE test SET \
+    _ <- execute c "UPDATE test SET \
             \__bit        = ?     ,\
             \__tinyInt    = ?     ,\
             \__tinyIntU   = ?     ,\
@@ -222,10 +221,10 @@ tests c = do
                 , MySQLText "foo,bar"
                 ]
 
-    (_, is) <- query_ c "SELECT * FROM test"
-    Just v <- Stream.read is
+    (_, is4) <- query_ c "SELECT * FROM test"
+    Just v4 <- Stream.read is4
 
-    assertEqual "roundtrip text protocol" v
+    assertEqual "roundtrip text protocol" v4
         [ MySQLInt32 0
         , MySQLBit bitV
         , MySQLInt8 (-128)
@@ -258,18 +257,18 @@ tests c = do
         , MySQLText "foo,bar"
         ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is4
 
 
-    execute_ c "UPDATE test SET \
+    _ <- execute_ c "UPDATE test SET \
         \__mediumInt  = null         ,\
         \__double     = null         ,\
         \__text = null WHERE __id=0"
 
-    (_, is) <- query_ c "SELECT * FROM test"
-    Just v <- Stream.read is
+    (_, is5) <- query_ c "SELECT * FROM test"
+    Just v5 <- Stream.read is5
 
-    assertEqual "decode text protocol with null" v
+    assertEqual "decode text protocol with null" v5
         [ MySQLInt32 0
         , MySQLBit bitV
         , MySQLInt8 (-128)
@@ -302,18 +301,18 @@ tests c = do
         , MySQLText "foo,bar"
         ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is5
 
-    execute c "UPDATE test SET \
+    _ <- execute c "UPDATE test SET \
         \__decimal  = ?         ,\
         \__date     = ?         ,\
         \__timestamp = ? WHERE __id=0"
         [MySQLNull, MySQLNull, MySQLNull]
 
-    (_, is) <- query_ c "SELECT * FROM test"
-    Just v <- Stream.read is
+    (_, is6) <- query_ c "SELECT * FROM test"
+    Just v6 <- Stream.read is6
 
-    assertEqual "roundtrip text protocol with null" v
+    assertEqual "roundtrip text protocol with null" v6
         [ MySQLInt32 0
         , MySQLBit bitV
         , MySQLInt8 (-128)
@@ -346,47 +345,47 @@ tests c = do
         , MySQLText "foo,bar"
         ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is6
 
-    execute_ c "UPDATE test SET \
+    _ <- execute_ c "UPDATE test SET \
         \__time       = '199:59:59'     ,\
         \__year       = 0  WHERE __id=0"
 
-    (_, is) <- query_ c "SELECT __time, __year FROM test"
-    Just v <- Stream.read is
+    (_, is7) <- query_ c "SELECT __time, __year FROM test"
+    Just v7 <- Stream.read is7
 
-    assertEqual "decode text protocol 2" v
+    assertEqual "decode text protocol 2" v7
             [ MySQLTime 0 (TimeOfDay 199 59 59)
             , MySQLYear 0
             ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is7
 
-    execute_ c "UPDATE test SET \
+    _ <- execute_ c "UPDATE test SET \
         \__text       = ''     ,\
         \__blob       = ''  WHERE __id=0"
 
-    (_, is) <- query_ c "SELECT __text, __blob FROM test"
-    Just v <- Stream.read is
+    (_, is8) <- query_ c "SELECT __text, __blob FROM test"
+    Just v8 <- Stream.read is8
 
-    assertEqual "decode text protocol 3" v
+    assertEqual "decode text protocol 3" v8
             [ MySQLText ""
             , MySQLBytes ""
             ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is8
 
-    execute c "UPDATE test SET \
+    _ <- execute c "UPDATE test SET \
         \__time       = ?     ,\
         \__year       = ?  WHERE __id=0"
         [ MySQLTime 0 (TimeOfDay 199 59 59), MySQLYear 0]
 
-    (_, is) <- query_ c "SELECT __time, __year FROM test"
-    Just v <- Stream.read is
+    (_, is9) <- query_ c "SELECT __time, __year FROM test"
+    Just v9 <- Stream.read is9
 
-    assertEqual "roundtrip text protocol 2" v
+    assertEqual "roundtrip text protocol 2" v9
             [ MySQLTime 0 (TimeOfDay 199 59 59)
             , MySQLYear 0
             ]
 
-    Stream.skipToEof is
+    Stream.skipToEof is9
