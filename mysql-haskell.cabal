@@ -116,6 +116,7 @@ library
 
 
 test-suite test
+  import: common-options
   type:               exitcode-stdio-1.0
   main-is:            Main.hs
   other-modules:
@@ -142,8 +143,6 @@ test-suite test
     attoparsec < 1.0,
     binary >=0.8,
     bytestring >=0.10,
-    bytestring-lexing >=0.5,
-    containers < 1,
     deepseq,
     directory < 2.0,
     filepath < 2.0,

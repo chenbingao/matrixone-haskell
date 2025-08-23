@@ -2,9 +2,6 @@
 
 module QC.Combinator where
 
-#if !MIN_VERSION_base(4,8,0)
-import Control.Applicative
-#endif
 import qualified Control.Monad as M (replicateM)
 import Data.Maybe (fromJust, isJust)
 import Data.Word (Word8)
@@ -14,7 +11,6 @@ import Test.Tasty.QuickCheck (testProperty)
 import Test.QuickCheck
 import qualified Data.Binary.Parser as P
 import qualified Data.ByteString as B
-import qualified Data.ByteString.Char8 as B8
 import qualified Data.Foldable as Foldable (asum)
 
 asum :: NonEmptyList (NonEmptyList Word8) -> Gen Property

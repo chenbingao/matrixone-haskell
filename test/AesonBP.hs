@@ -6,25 +6,14 @@ module AesonBP where
 import Data.ByteString.Builder
   (Builder, byteString, toLazyByteString, charUtf8, word8)
 
-#if !MIN_VERSION_base(4,8,0)
-import Control.Applicative ((*>), (<$>), (<*), pure)
-import Data.Monoid (mappend, mempty)
-#endif
-
-import Control.Applicative (liftA2)
-import Control.DeepSeq (NFData(..))
-import Control.Monad (forM)
 import Data.Bits ((.|.), shiftL)
 import Data.ByteString (ByteString)
 import Data.Char (chr)
-import Data.List (sort)
-import Data.Scientific (Scientific)
 import Data.Text (Text)
 import Data.Text.Encoding (decodeUtf8')
-import Data.Vector as Vector (Vector, foldl', fromList)
+import Data.Vector as Vector (Vector, fromList)
 import Data.Word (Word8)
-import System.Directory (getDirectoryContents)
-import System.FilePath ((</>), dropExtension)
+import System.FilePath ((</>))
 import qualified Data.Attoparsec.Zepto as Z
 import Data.Binary.Get (Get)
 import qualified Data.Binary.Parser as BP
