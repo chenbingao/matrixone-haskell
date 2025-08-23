@@ -5,6 +5,11 @@
 + upgrade cabal file
 + add upper bounds to all the warnings
   + it was only the test suite so I made them broad.
++ Disable inline-rule-shadowing for Int24 and Word24.
+  those rules fire fine. you can test it our yourself with
+  the Main.hs in the main repository.
+  There is a stanza to do so in cabal.
++ clean up cabal file a bit, use GHC2021
 
 ## 1.1.6 -- 2024.10.23 
 + bump constraints
