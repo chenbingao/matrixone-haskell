@@ -20,6 +20,8 @@ import qualified System.IO.Streams.TCP          as TCP
 import qualified System.IO.Streams.TLS          as TLS
 ------------------------------------------------------------------------------
 
+import Test.Tasty.ExpectedFailure (ignoreTestBecause)
+
 tests :: TestTree
 tests = testGroup "tests" [ testGroup "TCP" tcpTests
         , testGroup "TLS"  tlsTests
@@ -102,7 +104,9 @@ testTLSSocket = testCase "network/socket" $
         close conn
 
 testHTTPS :: TestTree
-testHTTPS = testCase "network/https" $
+testHTTPS =
+  ignoreTestBecause "can't connect to socket in a nix container, the build becomes no longer reproducible." $
+  testCase "network/https" $
     N.withSocketsDo $ do
     x <- timeout (10 * 10^(6::Int)) go
     assertEqual "ok" (Just 1024) x

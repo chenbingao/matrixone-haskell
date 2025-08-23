@@ -155,6 +155,7 @@ test-suite test
     tasty >=0.11 && <2.0,
     tasty-hunit < 1.0,
     tasty-quickcheck >=0.8 && < 1.0,
+    tasty-expected-failure  < 1.0,
     text,
     time,
     unordered-containers < 1.0,
