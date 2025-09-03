@@ -1,13 +1,10 @@
 cabal-version:      3.4
-name:               mysql-haskell
+name:               matrixone-haskell
 version:            1.1.7
-synopsis:           pure haskell MySQL driver
-description:        pure haskell MySQL driver.
+synopsis:           pure haskell MatrixOne driver
+description:        pure haskell MatrixOne driver.
 license:            BSD-3-Clause
 license-file:       LICENSE
-author:             winterland1989
-maintainer:         hi@jappie.me
-copyright:          (c) 2016 Winterland
 category:           Database
 build-type:         Simple
 extra-doc-files:    ChangeLog.md
@@ -35,8 +32,7 @@ extra-source-files:
   test/json-data/twitter20.json
   test/json-data/twitter50.json
 
-homepage:           https://github.com/winterland1989/mysql-haskell
-bug-reports:        https://github.com/winterland1989/mysql-haskell/issues
+homepage:           https://github.com/chenbingao/matrixone-haskell
 
 source-repository head
   type:     git
@@ -81,8 +77,8 @@ library
     System.IO.Streams.TCP
     System.IO.Streams.TLS
 
-  other-modules:      Paths_mysql_haskell
-  autogen-modules:    Paths_mysql_haskell
+  other-modules:      Paths_matrixone_haskell
+  autogen-modules:    Paths_matrixone_haskell
   hs-source-dirs:     src
   other-modules:      Database.MySQL.Query
   build-depends:
@@ -147,7 +143,7 @@ test-suite test
     directory < 2.0,
     filepath < 2.0,
     io-streams,
-    mysql-haskell,
+    matrixone-haskell,
     network,
     QuickCheck >=2.7 && <3.0,
     quickcheck-instances < 1.0,
@@ -187,7 +183,7 @@ benchmark binary-parsers-bench
     directory < 1.4,
     filepath < 1.6,
     http-types < 1.0,
-    mysql-haskell,
+    matrixone-haskell,
     scanner < 0.4,
     scientific,
     text,
@@ -207,7 +203,7 @@ benchmark bench24
   build-depends:
     criterion >=1.1,
     deepseq >=1.2 && <2,
-    mysql-haskell
+    matrixone-haskell
 
   ghc-options:      -O2
 
@@ -218,5 +214,5 @@ benchmark bench24
 --   hs-source-dirs:
 --       app
 --   build-depends:
---       mysql-haskell
+--       matrixone-haskell
 --   ghc-options: -Wno-unused-packages
