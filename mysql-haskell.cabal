@@ -40,7 +40,7 @@ bug-reports:        https://github.com/winterland1989/mysql-haskell/issues
 
 source-repository head
   type:     git
-  location: git://github.com/winterland1989/mysql-haskell.git
+  location: git@github.com:chenbingao/matrixone-haskell.git
 
 
 common common-options
@@ -52,7 +52,7 @@ common common-options
     -fenable-th-splice-warnings
     -fno-omit-yields
   build-depends:
-      base >=4.9.1.0 && <4.21.0
+      base >=4.9.1.0 && <4.22.0
   default-language: GHC2021
 
 library
